@@ -1,6 +1,7 @@
 package pie.ilikepiefoo2.clickminer.clickergame.event;
 
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.GenericEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo2.clickminer.clickergame.BigNumber;
