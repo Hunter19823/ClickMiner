@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[33,)"
+issueTrackerURL = "https://github.com/Hunter19823/ClickMiner/issues"
+license = "All Rights Reserved"
+
+[[mods]]
+modId="clickminer"
+version="${file.jarVersion}"
+displayName="Click Miner"
+authors="ILIKEPIEFOO2"
+description='''
+Turn Minecraft into a clicker game...
+'''
+
+[[dependencies.clickminer]]
+modId="forge"
+mandatory = true
+versionRange = "[33,)"
+ordering = "NONE"
+side="BOTH"
