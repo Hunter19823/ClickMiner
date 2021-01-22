@@ -12,6 +12,7 @@ public abstract class Generator {
     private BigNumber generationPerTick;
     private ClickerGame game;
     private GeneratorType generatorType;
+    private int lastCollected = 0;
 
     public Generator(ClickerGame game, BigNumber generationPerTick, GeneratorType generatorType)
     {
@@ -28,6 +29,15 @@ public abstract class Generator {
         this.game.addGenerator(this);
     }
 
+    public int getLastCollected()
+    {
+        return lastCollected;
+    }
+
+    public void setLastCollected(int lastCollected)
+    {
+        this.lastCollected = lastCollected;
+    }
 
     protected abstract boolean tick(BigNumber number);
     public boolean tick(){

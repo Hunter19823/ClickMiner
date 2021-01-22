@@ -77,6 +77,11 @@ public class ClickerGame {
         return generatorByPosition.get(pos);
     }
 
+    public ArrayList<Generator> getGenerators(GeneratorType type)
+    {
+        return generators.get(type);
+    }
+
     public static void main(String[] args)
     {
         ClickerGame testGame = new ClickerGame();

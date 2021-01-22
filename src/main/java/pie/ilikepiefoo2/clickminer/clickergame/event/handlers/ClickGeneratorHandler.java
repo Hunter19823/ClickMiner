@@ -1,6 +1,7 @@
 package pie.ilikepiefoo2.clickminer.clickergame.event.handlers;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.state.Property;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,7 +31,10 @@ public class ClickGeneratorHandler
     public static void onPreGeneratorTick(GeneratorEvent.BeforeGeneratorTick<ClickGenerator> event)
     {
         // TODO do math for every Click Generator, instead of just one.
-        BigNumber total = event.getGenerator().simulateTicks(event.getTickCount());
+        BigNumber total = new BigNumber(0);
+        for(Generator generator : event.getGame().getGenerators(GeneratorType.CLICK)) {
+            total.add(generator.simulateTicks(event.getTickCount()));
+        }
         event.getGenerator().getGame().add(total);
     }
 
@@ -59,7 +63,10 @@ public class ClickGeneratorHandler
         Generator generator = GLOBAL_GAME.getGenerator(event.getPos());
         if(generator!=null){
             if(generator.getGeneratorType() == GeneratorType.CLICK){
-                generator.tick();
+                if(event.getWorld() != null && event.getWorld().getServer() != null && event.getWorld().getServer().getTickCounter()-generator.getLastCollected()>20) {
+                    generator.setLastCollected(event.getWorld().getServer().getTickCounter());
+                    generator.tick();
+                }
             }
         }
     }
