@@ -1,4 +1,4 @@
-package pie.ilikepiefoo2.clickminer.core;
+package pie.ilikepiefoo2.clickminer.common;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

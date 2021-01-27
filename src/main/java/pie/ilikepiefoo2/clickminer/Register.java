@@ -6,12 +6,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import pie.ilikepiefoo2.clickminer.clickergame.blocks.GeneratorBlock;
-import pie.ilikepiefoo2.clickminer.core.ClickMinerCreativeTab;
+import pie.ilikepiefoo2.clickminer.common.blocks.GeneratorBlock;
+import pie.ilikepiefoo2.clickminer.common.ClickMinerCreativeTab;
 
 
 public final class Register {

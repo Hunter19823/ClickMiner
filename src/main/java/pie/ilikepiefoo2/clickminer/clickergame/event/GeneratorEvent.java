@@ -1,39 +1,53 @@
 package pie.ilikepiefoo2.clickminer.clickergame.event;
 
 
+import net.minecraft.entity.Entity;
 import net.minecraftforge.eventbus.api.Cancelable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo2.clickminer.clickergame.BigNumber;
-import pie.ilikepiefoo2.clickminer.clickergame.Generator;
+import pie.ilikepiefoo2.clickminer.clickergame.ClickerGame;
+import pie.ilikepiefoo2.clickminer.clickergame.generators.GeneratorType;
+import pie.ilikepiefoo2.clickminer.util.BigNumber;
+import pie.ilikepiefoo2.clickminer.clickergame.generators.Generator;
 
 // TODO Documentation
-public abstract class GeneratorEvent extends ClickerEvent {
+public abstract class GeneratorEvent<GENERATOR extends Generator> extends ClickerEvent {
     private static final Logger LOGGER = LogManager.getLogger();
-    protected Generator generator;
+    protected GENERATOR generator;
+    protected Entity entity;
 
-    public GeneratorEvent(Generator generator)
+    public GeneratorEvent(GENERATOR generator, Entity entity)
     {
-        super(generator.getGame());
+        super(generator.getGame(entity));
+        this.entity = entity;
         this.generator = generator;
     }
 
-    public abstract Generator getGenerator();
+    public abstract GENERATOR getGenerator();
+
+    public Entity getEntity()
+    {
+        return entity;
+    }
+
+    public ClickerGame getGame()
+    {
+        return this.generator.getGame(this.entity);
+    }
 
     @Cancelable
-    public static class BeforeGeneratorTick<GENERATOR_TYPE extends Generator> extends GeneratorEvent
+    public static class BeforeGeneratorTick<GENERATOR extends Generator> extends GeneratorEvent
     {
         public BigNumber tickCount;
 
-        public BeforeGeneratorTick(GENERATOR_TYPE generator, BigNumber tickCount)
+        public BeforeGeneratorTick(GENERATOR generator, Entity entity, BigNumber tickCount)
         {
-            super(generator);
+            super(generator, entity);
             this.tickCount = tickCount;
         }
-        public BeforeGeneratorTick(GENERATOR_TYPE generator, double tickCount)
+        public BeforeGeneratorTick(GENERATOR generator, Entity entity, double tickCount)
         {
-            super(generator);
-            this.tickCount = new BigNumber(tickCount);
+            this(generator,entity,new BigNumber(tickCount));
         }
 
         public BigNumber getTickCount()
@@ -46,25 +60,25 @@ public abstract class GeneratorEvent extends ClickerEvent {
         }
 
         @Override
-        public GENERATOR_TYPE getGenerator()
+        public GENERATOR getGenerator()
         {
-            return (GENERATOR_TYPE) this.generator;
+            return (GENERATOR) this.generator;
         }
     }
 
-
-    public static class AfterGeneratorTick<GENERATOR_TYPE extends Generator> extends GeneratorEvent
+    /*
+    public static class AfterGeneratorTick<GENERATOR extends Generator> extends GeneratorEvent
     {
         private BigNumber tickCount;
         private BigNumber amountGenerated;
 
-        public AfterGeneratorTick(GENERATOR_TYPE generator, BigNumber tickCount, BigNumber amountGenerated)
+        public AfterGeneratorTick(GENERATOR generator, BigNumber tickCount, BigNumber amountGenerated)
         {
             super(generator);
             this.tickCount = tickCount;
             this.amountGenerated = amountGenerated;
         }
-        public AfterGeneratorTick(GENERATOR_TYPE generator, double tickCount, BigNumber amountGenerated)
+        public AfterGeneratorTick(GENERATOR generator, double tickCount, BigNumber amountGenerated)
         {
             super(generator);
             this.tickCount = new BigNumber(tickCount);
@@ -86,9 +100,11 @@ public abstract class GeneratorEvent extends ClickerEvent {
         }
 
         @Override
-        public GENERATOR_TYPE getGenerator()
+        public GENERATOR getGenerator()
         {
-            return (GENERATOR_TYPE) this.generator;
+            return (GENERATOR) this.generator;
         }
     }
+
+     */
 }

@@ -1,11 +1,11 @@
 package pie.ilikepiefoo2.clickminer.clickergame.event;
 
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.GenericEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo2.clickminer.clickergame.BigNumber;
+import pie.ilikepiefoo2.clickminer.util.BigNumber;
 import pie.ilikepiefoo2.clickminer.clickergame.ClickerGame;
+import pie.ilikepiefoo2.clickminer.util.Resource;
 
 // TODO Documentation
 public class ClickerEvent extends Event {
@@ -25,10 +25,12 @@ public class ClickerEvent extends Event {
 
     public static class MoneyChanged extends ClickerEvent{
         private BigNumber previousBalance, newBalance, difference;
+        private Resource resource;
 
-        public MoneyChanged(ClickerGame game, BigNumber previousBalance, BigNumber newBalance)
+        public MoneyChanged(ClickerGame game, Resource resource, BigNumber previousBalance, BigNumber newBalance)
         {
             super(game);
+            this.resource = resource;
             this.previousBalance = previousBalance;
             this.newBalance = newBalance;
             this.difference = newBalance.minus(previousBalance);
@@ -62,6 +64,11 @@ public class ClickerEvent extends Event {
         public void setDifference(BigNumber difference)
         {
             this.difference = difference;
+        }
+
+        public Resource getResource()
+        {
+            return resource;
         }
     }
 

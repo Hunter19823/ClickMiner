@@ -1,5 +1,6 @@
-package pie.ilikepiefoo2.clickminer.clickergame;
+package pie.ilikepiefoo2.clickminer.util;
 
+import net.minecraft.nbt.CompoundNBT;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -146,7 +147,7 @@ public class BigNumber {
             this.exponent = 0;
             return;
         }
-        while(this.value >= 1000 || (this.value < 1)) {
+        while(this.value >= 1000 || (this.value < 1 && this.value != 0)) {
             if (this.value >= 1000) {
                 this.value /= 1000.0;
                 this.exponent += 1;
@@ -220,6 +221,18 @@ public class BigNumber {
                 return (Math.round(this.value)+"."+Math.round(this.value *1000)%1000) + " "+ suffix.prefix;
             }
         }
+    }
+
+    public CompoundNBT toNBT()
+    {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putDouble("value",this.value);
+        nbt.putInt("exponent",this.exponent);
+        return nbt;
+    }
+    public static BigNumber fromNBT(CompoundNBT compoundNBT)
+    {
+        return new BigNumber(compoundNBT.getDouble("value"),compoundNBT.getInt("exponent"));
     }
 
     public static BigNumber Max(BigNumber n1, BigNumber n2)
