@@ -1,12 +1,10 @@
 package pie.ilikepiefoo2.clickminer;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,9 +12,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo2.clickminer.clickergame.ClickerGame;
 import pie.ilikepiefoo2.clickminer.clickergame.IClickerGame;
-import pie.ilikepiefoo2.clickminer.clickergame.event.handlers.ClickGeneratorHandler;
+import pie.ilikepiefoo2.clickminer.clickergame.event.handlers.GeneratorHandler;
 import pie.ilikepiefoo2.clickminer.clickergame.event.handlers.ClickerGameHandler;
 import pie.ilikepiefoo2.clickminer.util.capability.CapabilityClickerGameHandler;
 
@@ -37,7 +34,7 @@ public class ClickMiner
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(ClickMiner::onCommonSetup);
 
-        MinecraftForge.EVENT_BUS.register(ClickGeneratorHandler.class);
+        MinecraftForge.EVENT_BUS.register(GeneratorHandler.class);
         MinecraftForge.EVENT_BUS.register(ClickerGameHandler.class);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class,CapabilityClickerGameHandler::attachCapability);
         /*

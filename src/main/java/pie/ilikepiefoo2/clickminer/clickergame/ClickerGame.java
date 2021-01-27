@@ -144,7 +144,7 @@ public class ClickerGame implements IClickerGame{
     @Override
     public BigNumber getResourceAmount(Resource resource)
     {
-        return resourceList.get(resource);
+        return resourceList.get(resource.toString());
     }
 
     @Override

@@ -5,5 +5,5 @@ import java.util.function.Supplier;
 
 public enum GeneratorType
 {
-    CLICK;
+    CLICK, BREAK, AUTOMATIC;
 }
