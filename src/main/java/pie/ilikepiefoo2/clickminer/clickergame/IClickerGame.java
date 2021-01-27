@@ -15,7 +15,6 @@ public interface IClickerGame {
 
 
 
-    UUID owner = null;
     UUID getOwner();
     void setOwner(UUID owner);
 
