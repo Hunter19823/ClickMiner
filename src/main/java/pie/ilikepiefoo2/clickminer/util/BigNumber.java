@@ -41,16 +41,6 @@ public class BigNumber {
                 this.value = max.value + min.getValue() / Math.pow(1000, Math.abs(diff));
                 this.exponent = max.exponent;
             }
-            /*
-            if(that.exponent < 0 == this.exponent < 0){
-                if (diff <= 1) {
-                    this.value += that.value / Math.pow(1000, diff);
-                }
-            }else{
-                this.value = Math.max(this.value, that.value) + Math.min(this.value, that.value)/1000;
-                this.exponent = Math.max(this.exponent,that.exponent);
-            }
-             */
         }
         shrink();
         return this;
@@ -135,6 +125,23 @@ public class BigNumber {
         return new BigNumber(this).over(that);
     }
 
+
+    public boolean lessThan(BigNumber that)
+    {
+        return this.exponent < that.exponent || (this.exponent == that.exponent && this.value < that.value);
+    }
+    public boolean lessThanEqual(BigNumber that)
+    {
+        return this.exponent < that.exponent || (this.exponent == that.exponent && this.value <= that.value);
+    }
+    public boolean greaterThan(BigNumber that)
+    {
+        return this.exponent > that.exponent || (this.exponent == that.exponent && this.value > that.value);
+    }
+    public boolean greaterThanEqual(BigNumber that)
+    {
+        return this.exponent > that.exponent || (this.exponent == that.exponent && this.value >= that.value);
+    }
     public void clear()
     {
         this.value = 0.0;

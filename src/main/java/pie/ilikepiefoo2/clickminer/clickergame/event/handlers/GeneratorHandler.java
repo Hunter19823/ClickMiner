@@ -1,10 +1,8 @@
 package pie.ilikepiefoo2.clickminer.clickergame.event.handlers;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.Color;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -30,21 +28,12 @@ public class GeneratorHandler
     public static final Logger LOGGER = LogManager.getLogger();
 
     @SubscribeEvent
-    public static void onPreGeneratorTick(GeneratorEvent.BeforeGeneratorTick<Generator> event)
+    public static void onGeneratorTick(GeneratorEvent.Tick event)
     {
         // TODO do math for every Click Generator, instead of just one.
-        LOGGER.debug("Pre Generator Tick");
+        //LOGGER.debug("Generator Tick");
         event.getGame().addResourceAmount(event.getGenerator().getProduces(), event.getGenerator().getGenerationPerTick().times(event.getTickCount()));
-
-        /*
-        BigNumber total = new BigNumber(0);
-
-        for(Generator generator : event.getGame().getGenerators(GeneratorType.CLICK)) {
-            total.add(generator.simulateTicks(event.getTickCount()));
-        }
-        event.getGenerator().getGame().add(total);
-         */
-
+        event.getGenerator().nextProduct();
     }
 
     /*
@@ -64,13 +53,18 @@ public class GeneratorHandler
     public static void onGeneratorPlaced(BlockEvent.EntityPlaceEvent event)
     {
         //LOGGER.debug("Entity placed generator with of UUID "+event.getEntity().getUniqueID());
-        if(event.getPlacedBlock().getBlock().matchesBlock(Register.CLICKER_BLOCK) && event.getEntity().getCapability(CapabilityClickerGameHandler.CLICKER_GAME_CAPABILITY).isPresent()){
+        if(event.getEntity().getCapability(CapabilityClickerGameHandler.CLICKER_GAME_CAPABILITY).isPresent()){
             ClickerGame game = (ClickerGame) event.getEntity().getCapability(CapabilityClickerGameHandler.CLICKER_GAME_CAPABILITY).resolve().get();
-            //LOGGER.debug("A new Clicker has been anchored for entity: "+game.getOwner());
-            //LOGGER.debug("Entities's UUID "+event.getEntity().getUniqueID());
-            game.addGenerator(event.getPos(), new Generator(event.getEntity().getUniqueID(), Resource.OAK_PLANKS,new BigNumber(1), GeneratorType.BREAK));
-            //ClickGenerator generator = new ClickGenerator(GLOBAL_GAME,1);
-            //GLOBAL_GAME.anchor(event.getPos(),generator);
+            Block block = event.getPlacedBlock().getBlock();
+            if(block.matchesBlock(Register.DARK_OAK_TREE)) {
+                game.addGenerator(event.getPos(), new Generator(event.getEntity().getUniqueID(), Resource.DARK_OAK_TREE, new BigNumber(1), GeneratorType.BREAK));
+            } else if(block.matchesBlock(Register.FOREST)) {
+                game.addGenerator(event.getPos(), new Generator(event.getEntity().getUniqueID(), Resource.FOREST, new BigNumber(1), GeneratorType.BREAK));
+            } else if(block.matchesBlock(Register.OAK_TREE)) {
+                game.addGenerator(event.getPos(), new Generator(event.getEntity().getUniqueID(), Resource.OAK_TREE, new BigNumber(1), GeneratorType.BREAK));
+            } else if(block.matchesBlock(Register.CLICKER_BLOCK)) {
+                game.addGenerator(event.getPos(), new Generator(event.getEntity().getUniqueID(), Resource.OAK_TREE, new BigNumber(1), GeneratorType.CLICK));
+            }
         }
     }
 
@@ -83,8 +77,10 @@ public class GeneratorHandler
             if (generator != null) {
                 if (generator.getGeneratorType() == GeneratorType.CLICK) {
                     if (event.getWorld() != null && event.getWorld().getServer() != null) {
+                        Resource previous = generator.getProduces();
                         generator.tick(event.getEntity());
-                        sendResourceGainInfo(event.getPlayer(),generator);
+                        sendResourceGainInfo(event.getPlayer(),generator, previous);
+                        event.getWorld().setBlockState(event.getPos(),generator.getProduces().getVisual().getDefaultState(),2);
                     }
                 }else{
                     if(generator.getGeneratorType() != GeneratorType.AUTOMATIC)
@@ -101,11 +97,10 @@ public class GeneratorHandler
             Generator generator = ClickerGame.getGlobalGenerator(event.getPos());
             if(generator != null) {
                 if (generator.getGeneratorType() == GeneratorType.BREAK) {
+                    Resource previous = generator.getProduces();
                     generator.tick(event.getPlayer());
-                    sendResourceGainInfo(event.getPlayer(),generator);
-                    if(event.getState().getBlock() == Register.CLICKER_BLOCK)
-                        sendGeneratorInfo(event.getPlayer(),generator);
-                    event.getWorld().setBlockState(event.getPos(), Blocks.OAK_WOOD.getDefaultState(),2);
+                    sendResourceGainInfo(event.getPlayer(),generator, previous);
+                    event.getWorld().setBlockState(event.getPos(),generator.getProduces().getVisual().getDefaultState(),2);
                 }else{
                     if(generator.getGeneratorType() != GeneratorType.AUTOMATIC)
                         sendGeneratorInfo(event.getPlayer(),generator);
@@ -126,10 +121,9 @@ public class GeneratorHandler
                         .getOutput()
                 ,generator.getOwnedBy());
     }
-    private static void sendResourceGainInfo(Entity entity, Generator generator)
+    private static void sendResourceGainInfo(Entity entity, Generator generator, Resource resource)
     {
         ClickerGame game = generator.getGame(entity);
-        Resource resource = generator.getProduces();
         entity.sendMessage(
                 new TextHelper()
                         .add("You now have ")

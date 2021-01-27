@@ -25,7 +25,7 @@ public class ClickerGameHandler {
     @SubscribeEvent
     public static void onMoneyChange(ClickerEvent.MoneyChanged event)
     {
-        LOGGER.debug(String.format("Resource %s has changed: %s -> %s (%s)",event.getResource().getItem().toString(),event.getPreviousBalance(),event.getNewBalance(),event.getDifference()));
+        //LOGGER.debug(String.format("Resource %s has changed: %s -> %s (%s)",event.getResource().getItem().toString(),event.getPreviousBalance(),event.getNewBalance(),event.getDifference()));
     }
 
     @SubscribeEvent

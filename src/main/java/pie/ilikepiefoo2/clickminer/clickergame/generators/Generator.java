@@ -1,18 +1,16 @@
 package pie.ilikepiefoo2.clickminer.clickergame.generators;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo2.clickminer.ClickMiner;
 import pie.ilikepiefoo2.clickminer.clickergame.ClickerGame;
 import pie.ilikepiefoo2.clickminer.clickergame.event.GeneratorEvent;
 import pie.ilikepiefoo2.clickminer.util.BigNumber;
 import pie.ilikepiefoo2.clickminer.util.Resource;
+import pie.ilikepiefoo2.clickminer.util.WeightedRandom;
 import pie.ilikepiefoo2.clickminer.util.capability.CapabilityClickerGameHandler;
-import pie.ilikepiefoo2.clickminer.util.capability.ClickerGameProvider;
 
 import java.util.UUID;
 
@@ -24,13 +22,15 @@ public class Generator {
     private GeneratorType generatorType;
     private Resource produces;
     private UUID ownedBy;
+    private WeightedRandom<Resource> resourceWeightedRandom;
 
-    public Generator(UUID ownedBy, Resource produces, BigNumber generationPerTick, GeneratorType generatorType){
+    public Generator(UUID ownedBy, WeightedRandom<Resource> produces, BigNumber generationPerTick, GeneratorType generatorType){
         // TODO !fix logic!
         this.ownedBy = ownedBy;
-        this.produces = produces;
         this.generationPerTick = generationPerTick;
         this.generatorType = generatorType;
+        this.resourceWeightedRandom = produces;
+        this.produces = produces.next();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Generator {
 
     public boolean tick(Entity owner, BigNumber tickCount)
     {
-        return MinecraftForge.EVENT_BUS.post(new GeneratorEvent.BeforeGeneratorTick(this,owner,tickCount));
+        return MinecraftForge.EVENT_BUS.post(new GeneratorEvent.Tick(this,owner,tickCount));
     }
 
     public BigNumber getGenerationPerTick()
@@ -75,6 +75,12 @@ public class Generator {
         return produces;
     }
 
+    public Resource nextProduct()
+    {
+        this.produces = this.resourceWeightedRandom.next();
+        return this.produces;
+    }
+
     public UUID getOwnedBy()
     {
         return ownedBy;
@@ -84,18 +90,16 @@ public class Generator {
     {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putUniqueId("ownedBy",this.ownedBy);
-        nbt.put("produces",this.produces.toNBT());
+        nbt.put("resourceWeightedRandom",this.resourceWeightedRandom.toNBT());
         nbt.put("generationRate",this.generationPerTick.toNBT());
         nbt.putString("type",this.generatorType.name());
         return nbt;
     }
     public static Generator fromNBT(CompoundNBT nbt)
     {
-        GeneratorType type = GeneratorType.valueOf(nbt.getString("type"));
-
         return new Generator(
                 nbt.getUniqueId("ownedBy"),
-                Resource.fromNBT((CompoundNBT) nbt.get("produces")),
+                WeightedRandom.fromNBT((CompoundNBT) nbt.get("resourceWeightedRandom")),
                 BigNumber.fromNBT((CompoundNBT) nbt.get("generationRate")),
                 GeneratorType.valueOf(nbt.getString("type"))
         );

@@ -14,7 +14,10 @@ import pie.ilikepiefoo2.clickminer.common.ClickMinerCreativeTab;
 
 
 public final class Register {
-    public static final Block CLICKER_BLOCK = new GeneratorBlock(AbstractBlock.Properties.from(Blocks.BEDROCK));
+    public static final Block CLICKER_BLOCK = new GeneratorBlock(AbstractBlock.Properties.from(Blocks.GLASS));
+    public static final Block FOREST = new GeneratorBlock(AbstractBlock.Properties.from(Blocks.GLASS));
+    public static final Block OAK_TREE = new GeneratorBlock(AbstractBlock.Properties.from(Blocks.GLASS));
+    public static final Block DARK_OAK_TREE = new GeneratorBlock(AbstractBlock.Properties.from(Blocks.GLASS));
 
     public static Item.Properties defaultBuilder()
     {
@@ -25,19 +28,23 @@ public final class Register {
     {
         IForgeRegistry<Block> r = evt.getRegistry();
         ResourceLibrary.DEFAULT_CLICKER.registerBlock(r,CLICKER_BLOCK);
+        ResourceLibrary.FOREST.registerBlock(r,FOREST);
+        ResourceLibrary.OAK_TREE.registerBlock(r,OAK_TREE);
+        ResourceLibrary.DARK_OAK_TREE.registerBlock(r,DARK_OAK_TREE);
     }
-
-
 
     public static void registerItemBlocks(RegistryEvent.Register<Item> evt)
     {
         IForgeRegistry<Item> r = evt.getRegistry();
         Item.Properties props = defaultBuilder();
         ResourceLibrary.DEFAULT_CLICKER.registerItemBlock(r, CLICKER_BLOCK,props);
+        ResourceLibrary.FOREST.registerItemBlock(r, FOREST,props);
+        ResourceLibrary.OAK_TREE.registerItemBlock(r, OAK_TREE,props);
+        ResourceLibrary.DARK_OAK_TREE.registerItemBlock(r, DARK_OAK_TREE,props);
     }
 
     public enum ResourceLibrary {
-        DEFAULT_CLICKER("clicker");
+        DEFAULT_CLICKER("clicker"),FOREST("forest"),OAK_TREE("oak_tree"),DARK_OAK_TREE("dark_oak_tree");
         public String path;
         ResourceLibrary(String path)
         {

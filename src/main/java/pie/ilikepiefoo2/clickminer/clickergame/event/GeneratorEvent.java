@@ -6,7 +6,6 @@ import net.minecraftforge.eventbus.api.Cancelable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo2.clickminer.clickergame.ClickerGame;
-import pie.ilikepiefoo2.clickminer.clickergame.generators.GeneratorType;
 import pie.ilikepiefoo2.clickminer.util.BigNumber;
 import pie.ilikepiefoo2.clickminer.clickergame.generators.Generator;
 
@@ -36,16 +35,16 @@ public abstract class GeneratorEvent<GENERATOR extends Generator> extends Clicke
     }
 
     @Cancelable
-    public static class BeforeGeneratorTick<GENERATOR extends Generator> extends GeneratorEvent
+    public static class Tick extends GeneratorEvent
     {
         public BigNumber tickCount;
 
-        public BeforeGeneratorTick(GENERATOR generator, Entity entity, BigNumber tickCount)
+        public Tick(Generator generator, Entity entity, BigNumber tickCount)
         {
             super(generator, entity);
             this.tickCount = tickCount;
         }
-        public BeforeGeneratorTick(GENERATOR generator, Entity entity, double tickCount)
+        public Tick(Generator generator, Entity entity, double tickCount)
         {
             this(generator,entity,new BigNumber(tickCount));
         }
@@ -60,9 +59,9 @@ public abstract class GeneratorEvent<GENERATOR extends Generator> extends Clicke
         }
 
         @Override
-        public GENERATOR getGenerator()
+        public Generator getGenerator()
         {
-            return (GENERATOR) this.generator;
+            return this.generator;
         }
     }
 

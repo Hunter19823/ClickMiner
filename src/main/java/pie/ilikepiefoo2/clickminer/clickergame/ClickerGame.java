@@ -54,56 +54,6 @@ public class ClickerGame implements IClickerGame{
         this.isValid = true;
     }
 
-    /*
-    public BigNumber getMoney()
-    {
-        return new BigNumber(money);
-    }
-
-    public void add(BigNumber number)
-    {
-        BigNumber previous = new BigNumber(this.money);
-        this.money.add(number);
-        if(!this.money.equals(previous))
-            MinecraftForge.EVENT_BUS.post(new ClickerEvent.MoneyChanged(this,previous,new BigNumber(this.money)));
-    }
-    public boolean subtract(BigNumber number)
-    {
-        BigNumber previous = new BigNumber(this.money);
-        if(this.money.subtract(number)!=null)
-            if(!this.money.equals(previous))
-                MinecraftForge.EVENT_BUS.post(new ClickerEvent.MoneyChanged(this,previous,new BigNumber(this.money)));
-
-        return false;
-    }
-    public void multiply(BigNumber number)
-    {
-        BigNumber previous = new BigNumber(this.money);
-        this.money.multiply(number);
-        if(!this.money.equals(previous))
-            MinecraftForge.EVENT_BUS.post(new ClickerEvent.MoneyChanged(this,previous,new BigNumber(this.money)));
-    }
-    public void divide(BigNumber number)
-    {
-        BigNumber previous = new BigNumber(this.money);
-        this.money.divide(number);
-        if(!this.money.equals(previous))
-            MinecraftForge.EVENT_BUS.post(new ClickerEvent.MoneyChanged(this,previous,new BigNumber(this.money)));
-    }
-    void addGenerator(Generator generator)
-    {
-        GeneratorType type = generator.getGeneratorType();
-        generators.computeIfAbsent(type, k -> new ArrayList<>());
-        generators.get(type).add(generator);
-    }
-    public Generator anchor(BlockPos pos, Generator generator)
-    {
-        return generatorByPosition.put(pos,generator);
-    }
-
-     */
-
-
     public static void main(String[] args)
     {
         System.out.println(UUID.randomUUID());
