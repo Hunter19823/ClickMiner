@@ -28,6 +28,12 @@ public class BigNumber {
         this.exponent = copy.exponent;
         shrink();
     }
+
+    @Override
+    public BigNumber clone()
+    {
+        return new BigNumber(this);
+    }
     public BigNumber add(BigNumber that)
     {
         int diff = this.exponent - that.exponent;

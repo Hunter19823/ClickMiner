@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "clickminer:item/clicker_item"
+    "layer0": "clickminer:item/miner_item"
   }
 }

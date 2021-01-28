@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "clickminer:block/miner_block",
+    "down": "clickminer:block/miner_block",
+    "up": "clickminer:block/miner_block",
+    "north": "clickminer:block/miner_block",
+    "east": "clickminer:block/miner_block",
+    "south": "clickminer:block/miner_block",
+    "west": "clickminer:block/miner_block"
+  }
+}
