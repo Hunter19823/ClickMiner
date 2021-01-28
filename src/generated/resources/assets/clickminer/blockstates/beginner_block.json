@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "clickminer:block/clicker_block"
+    }
+  }
+}

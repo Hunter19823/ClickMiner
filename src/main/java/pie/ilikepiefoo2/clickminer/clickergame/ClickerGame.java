@@ -13,6 +13,7 @@ import pie.ilikepiefoo2.clickminer.util.Resource;
 import pie.ilikepiefoo2.clickminer.util.capability.ClickerGameProvider;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 // TODO Documentation
@@ -133,16 +134,30 @@ public class ClickerGame implements IClickerGame{
         generatorMap.put(pos,generator);
     }
 
+    public boolean hasGenerator(String generatorName)
+    {
+        return this.generatorMap.values()
+                .stream()
+                .anyMatch(gen ->
+                gen.getName().equals(generatorName)
+        );
+    }
+
+
+    public Map.Entry<BlockPos, Generator> getGenerator(String generatorName)
+    {
+        return this.generatorMap.entrySet()
+                .stream()
+                .filter(gen ->
+                        gen.getValue().getName().equals(generatorName)
+                ).findFirst().get();
+    }
+
     @Override
     public void setOwner(UUID owner)
     {
         //LOGGER.debug("Clicker game now has new owner: ("+this.owner+") -> ("+owner+")");
         this.owner = owner;
-    }
-
-    public void save()
-    {
-        this.provider.save(this);
     }
 
     @Override

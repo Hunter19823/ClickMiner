@@ -13,6 +13,8 @@ import net.minecraftforge.common.util.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo2.clickminer.Register;
+import pie.ilikepiefoo2.clickminer.common.blocks.GeneratorBlock;
+import pie.ilikepiefoo2.clickminer.common.lib.LibCustomBlocks;
 
 import static net.minecraft.nbt.JsonToNBT.getTagFromJson;
 
@@ -22,6 +24,7 @@ public class Resource {
     public static final WeightedRandom<Resource> FOREST = new WeightedRandom<Resource>();
     public static final WeightedRandom<Resource> OAK_TREE = new WeightedRandom<Resource>();
     public static final WeightedRandom<Resource> DARK_OAK_TREE = new WeightedRandom<Resource>();
+    public static final WeightedRandom<Resource> BLANK = new WeightedRandom<Resource>();
 
     static{
         Item[] items = {
@@ -40,6 +43,7 @@ public class Resource {
         OAK_TREE.add(75,Items.OAK_LOG);
         DARK_OAK_TREE.add(60,Items.APPLE);
         DARK_OAK_TREE.add(75,Items.DARK_OAK_LOG);
+        BLANK.add(1,Items.AIR);
     }
 
     public Resource(Item resourceType)
@@ -55,7 +59,7 @@ public class Resource {
     public Block getVisual()
     {
         Block visual = Block.getBlockFromItem(this.item);
-        return visual.equals(Blocks.AIR) ? Register.CLICKER_BLOCK : visual;
+        return visual.equals(Blocks.AIR) ? LibCustomBlocks.BLOCKS.CLICKER_BLOCK.block : visual;
     }
 
     public CompoundNBT toNBT()

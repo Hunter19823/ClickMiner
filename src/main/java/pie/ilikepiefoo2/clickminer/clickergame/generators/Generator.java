@@ -17,15 +17,26 @@ import java.util.UUID;
 // TODO Documentation
 public class Generator {
     private static final Logger LOGGER = LogManager.getLogger();
+    private String name;
     private BigNumber generationPerTick;
-    private ClickerGame game;
     private GeneratorType generatorType;
     private Resource produces;
     private UUID ownedBy;
     private WeightedRandom<Resource> resourceWeightedRandom;
+    // TODO Add Upgrades to Generators.
 
-    public Generator(UUID ownedBy, WeightedRandom<Resource> produces, BigNumber generationPerTick, GeneratorType generatorType){
+    public Generator(String name, WeightedRandom<Resource> produces, BigNumber generationPerTick, GeneratorType generatorType)
+    {
+        this.name = name;
+        this.generationPerTick = generationPerTick;
+        this.generatorType = generatorType;
+        this.resourceWeightedRandom = produces;
+        this.produces = produces.next();
+    }
+
+    public Generator(String name, UUID ownedBy, WeightedRandom<Resource> produces, BigNumber generationPerTick, GeneratorType generatorType){
         // TODO !fix logic!
+        this.name = name;
         this.ownedBy = ownedBy;
         this.generationPerTick = generationPerTick;
         this.generatorType = generatorType;
@@ -34,11 +45,32 @@ public class Generator {
     }
 
     @Override
+    public Generator clone()
+    {
+        return new Generator(this.name, this.resourceWeightedRandom,this.generationPerTick.clone(),this.generatorType);
+    }
+
+    @Override
     public String toString()
     {
         return this.getClass().getSimpleName()+"{" +
                 "generationPerTick=" + generationPerTick +
                 '}';
+    }
+
+    public void setOwnedBy(UUID ownedBy)
+    {
+        this.ownedBy = ownedBy;
+    }
+
+    public WeightedRandom<Resource> getResourceWeightedRandom()
+    {
+        return resourceWeightedRandom;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     public ClickerGame getGame(Entity entity)
@@ -88,16 +120,22 @@ public class Generator {
 
     public CompoundNBT toNBT()
     {
+        LOGGER.debug("To NBT: ");
         CompoundNBT nbt = new CompoundNBT();
         nbt.putUniqueId("ownedBy",this.ownedBy);
         nbt.put("resourceWeightedRandom",this.resourceWeightedRandom.toNBT());
         nbt.put("generationRate",this.generationPerTick.toNBT());
         nbt.putString("type",this.generatorType.name());
+        nbt.putString("name",this.name);
+        LOGGER.debug(nbt.toString());
         return nbt;
     }
     public static Generator fromNBT(CompoundNBT nbt)
     {
+        LOGGER.debug("From NBT: ");
+        LOGGER.debug(nbt.toString());
         return new Generator(
+                nbt.getString("name"),
                 nbt.getUniqueId("ownedBy"),
                 WeightedRandom.fromNBT((CompoundNBT) nbt.get("resourceWeightedRandom")),
                 BigNumber.fromNBT((CompoundNBT) nbt.get("generationRate")),

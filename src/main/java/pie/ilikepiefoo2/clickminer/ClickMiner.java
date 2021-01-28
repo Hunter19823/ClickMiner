@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo2.clickminer.clickergame.IClickerGame;
 import pie.ilikepiefoo2.clickminer.clickergame.event.handlers.GeneratorHandler;
 import pie.ilikepiefoo2.clickminer.clickergame.event.handlers.ClickerGameHandler;
+import pie.ilikepiefoo2.clickminer.data.DataGenerators;
 import pie.ilikepiefoo2.clickminer.util.capability.CapabilityClickerGameHandler;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class ClickMiner
         LOGGER.debug("Click Miner Initialization");
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         modBus.addListener(ClickMiner::onCommonSetup);
-
+        modBus.addListener(DataGenerators::gatherData);
         MinecraftForge.EVENT_BUS.register(GeneratorHandler.class);
         MinecraftForge.EVENT_BUS.register(ClickerGameHandler.class);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class,CapabilityClickerGameHandler::attachCapability);
