@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo2.clickminer.ClickMiner;
 import pie.ilikepiefoo2.clickminer.Register;
+import pie.ilikepiefoo2.clickminer.clickergame.ClickerGame;
 import pie.ilikepiefoo2.clickminer.clickergame.generators.GeneratorType;
 import pie.ilikepiefoo2.clickminer.common.blocks.GeneratorBlock;
 import pie.ilikepiefoo2.clickminer.common.lib.LibCustomBlocks;
@@ -45,5 +46,6 @@ public class BlockstateProvider extends BlockStateProvider {
                     break;
             }
         }
+        simpleBlock(GeneratorBlock.UNTEXTURED_RESOURCE_BLOCK,models().getExistingFile(new ResourceLocation(ClickMiner.MOD_ID,"block/unknown_texture_block")));
     }
 }

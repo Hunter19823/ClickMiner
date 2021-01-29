@@ -4,19 +4,13 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo2.clickminer.Register;
 import pie.ilikepiefoo2.clickminer.common.blocks.GeneratorBlock;
 import pie.ilikepiefoo2.clickminer.common.lib.LibCustomBlocks;
-
-import static net.minecraft.nbt.JsonToNBT.getTagFromJson;
 
 public class Resource {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -39,10 +33,13 @@ public class Resource {
         {
             FOREST.add(items.length,item);
         }
+        FOREST.add(FOREST.getTotal(),Items.AIR);
         OAK_TREE.add(25,Items.APPLE);
         OAK_TREE.add(75,Items.OAK_LOG);
+        OAK_TREE.add(OAK_TREE.getTotal(),Items.AIR);
         DARK_OAK_TREE.add(60,Items.APPLE);
         DARK_OAK_TREE.add(75,Items.DARK_OAK_LOG);
+        DARK_OAK_TREE.add(DARK_OAK_TREE.getTotal(),Items.AIR);
         BLANK.add(1,Items.AIR);
     }
 
@@ -59,7 +56,7 @@ public class Resource {
     public Block getVisual()
     {
         Block visual = Block.getBlockFromItem(this.item);
-        return visual.equals(Blocks.AIR) ? LibCustomBlocks.BLOCKS.CLICKER_BLOCK.block : visual;
+        return visual.equals(Blocks.AIR) ? GeneratorBlock.UNTEXTURED_RESOURCE_BLOCK : visual;
     }
 
     public CompoundNBT toNBT()

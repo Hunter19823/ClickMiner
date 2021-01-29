@@ -2,7 +2,6 @@ package pie.ilikepiefoo2.clickminer.common;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import pie.ilikepiefoo2.clickminer.ClickMiner;
 import pie.ilikepiefoo2.clickminer.common.lib.LibCustomBlocks;
 
@@ -18,7 +17,7 @@ public class ClickMinerCreativeTab extends ItemGroup {
     @Override
     public ItemStack createIcon()
     {
-        return new ItemStack(LibCustomBlocks.BLOCKS.DRILL.block.getBlockItem().getItem());
+        return new ItemStack(LibCustomBlocks.BLOCKS.DRILL.GENERATOR_BLOCK.getBlockItem().getItem());
     }
 
 

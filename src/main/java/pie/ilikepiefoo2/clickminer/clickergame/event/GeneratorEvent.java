@@ -10,19 +10,21 @@ import pie.ilikepiefoo2.clickminer.util.BigNumber;
 import pie.ilikepiefoo2.clickminer.clickergame.generators.Generator;
 
 // TODO Documentation
-public abstract class GeneratorEvent<GENERATOR extends Generator> extends ClickerEvent {
+public abstract class GeneratorEvent extends ClickerEvent {
     private static final Logger LOGGER = LogManager.getLogger();
-    protected GENERATOR generator;
-    protected Entity entity;
+    protected final Generator generator;
+    protected final Entity entity;
 
-    public GeneratorEvent(GENERATOR generator, Entity entity)
+    public GeneratorEvent(Generator generator, Entity entity)
     {
         super(generator.getGame(entity));
         this.entity = entity;
         this.generator = generator;
     }
 
-    public abstract GENERATOR getGenerator();
+    public Generator getGenerator(){
+        return this.generator;
+    }
 
     public Entity getEntity()
     {
@@ -64,46 +66,4 @@ public abstract class GeneratorEvent<GENERATOR extends Generator> extends Clicke
             return this.generator;
         }
     }
-
-    /*
-    public static class AfterGeneratorTick<GENERATOR extends Generator> extends GeneratorEvent
-    {
-        private BigNumber tickCount;
-        private BigNumber amountGenerated;
-
-        public AfterGeneratorTick(GENERATOR generator, BigNumber tickCount, BigNumber amountGenerated)
-        {
-            super(generator);
-            this.tickCount = tickCount;
-            this.amountGenerated = amountGenerated;
-        }
-        public AfterGeneratorTick(GENERATOR generator, double tickCount, BigNumber amountGenerated)
-        {
-            super(generator);
-            this.tickCount = new BigNumber(tickCount);
-            this.amountGenerated = amountGenerated;
-        }
-
-        public BigNumber getTickCount()
-        {
-            return tickCount;
-        }
-
-        public BigNumber getAmountGenerated()
-        {
-            return amountGenerated;
-        }
-        private void setAmountGenerated(BigNumber amountGenerated)
-        {
-            this.amountGenerated = amountGenerated;
-        }
-
-        @Override
-        public GENERATOR getGenerator()
-        {
-            return (GENERATOR) this.generator;
-        }
-    }
-
-     */
 }

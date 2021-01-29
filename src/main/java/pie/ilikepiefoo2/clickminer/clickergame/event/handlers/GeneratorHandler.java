@@ -37,7 +37,7 @@ public class GeneratorHandler
     public static void onGeneratorTick(GeneratorEvent.Tick event)
     {
         // TODO do math for every Click Generator, instead of just one.
-        //LOGGER.debug("Generator Tick");
+        LOGGER.debug("Generator Tick for "+event.getGenerator().getProduces().getItem().toString());
         if(!event.getGenerator().getProduces().getItem().equals(Items.AIR))
             event.getGame().addResourceAmount(event.getGenerator().getProduces(), event.getGenerator().getGenerationPerTick().times(event.getTickCount()));
         event.getGenerator().nextProduct();
@@ -86,13 +86,14 @@ public class GeneratorHandler
                 ClickerGame game = (ClickerGame) event.getEntity().getCapability(CapabilityClickerGameHandler.CLICKER_GAME_CAPABILITY).resolve().get();
                 Generator generator = game.getGenerator(event.getPos());
                 if (generator != null) {
+                    // TODO make generator event for code below.
                     if (generator.getGeneratorType().equals(GeneratorType.CLICK)) {
-                        if (event.getWorld() != null && event.getWorld().getServer() != null) {
+                        if (!generator.isAir()) {
                             Resource previous = generator.getProduces();
                             generator.tick(event.getEntity());
                             sendResourceGainInfo(event.getPlayer(), generator, previous);
-                            event.getWorld().setBlockState(event.getPos(), generator.getProduces().getVisual().getDefaultState(), 2);
                         }
+                        event.getWorld().setBlockState(event.getPos(), generator.getProduces().getVisual().getDefaultState(), 2);
                     } else {
                         if (!generator.getGeneratorType().equals(GeneratorType.AUTOMATIC))
                             sendGeneratorInfo(event.getPlayer(), generator);
@@ -119,9 +120,11 @@ public class GeneratorHandler
                 Generator generator = game.getGenerator(event.getPos());
                 if (generator != null) {
                     if (generator.getGeneratorType().equals(GeneratorType.BREAK)) {
-                        Resource previous = generator.getProduces();
-                        generator.tick(event.getPlayer());
-                        sendResourceGainInfo(event.getPlayer(), generator, previous);
+                        if(!generator.isAir()) {
+                            Resource previous = generator.getProduces();
+                            generator.tick(event.getPlayer());
+                            sendResourceGainInfo(event.getPlayer(), generator, previous);
+                        }
                         event.getWorld().setBlockState(event.getPos(), generator.getProduces().getVisual().getDefaultState(), 2);
                     } else {
                         if (!generator.getGeneratorType().equals(GeneratorType.AUTOMATIC))
@@ -136,7 +139,9 @@ public class GeneratorHandler
         }
 
     }
-    private static void sendGeneratorInfo(Entity entity,Generator generator){
+    private static void sendGeneratorInfo(Entity entity,Generator generator)
+    {
+        // TODO move into generator class
         entity.sendMessage(
                 new TextHelper().add("This generator is a ")
                         .color(Color.fromHex("#00ff00"))
@@ -150,6 +155,7 @@ public class GeneratorHandler
     }
     private static void sendResourceGainInfo(Entity entity, Generator generator, Resource resource)
     {
+        // TODO move into generator class
         ClickerGame game = generator.getGame(entity);
         if(!game.getResourceAmount(resource).equals(resource))
             entity.sendMessage(

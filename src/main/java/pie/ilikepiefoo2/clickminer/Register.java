@@ -1,20 +1,12 @@
 package pie.ilikepiefoo2.clickminer;
 
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import pie.ilikepiefoo2.clickminer.clickergame.generators.GeneratorType.*;
 import pie.ilikepiefoo2.clickminer.common.blocks.GeneratorBlock;
 import pie.ilikepiefoo2.clickminer.common.ClickMinerCreativeTab;
 import pie.ilikepiefoo2.clickminer.common.lib.LibCustomBlocks;
-
-import static pie.ilikepiefoo2.clickminer.clickergame.generators.GeneratorType.*;
 
 
 public final class Register {
@@ -31,6 +23,7 @@ public final class Register {
         for(GeneratorBlock block : LibCustomBlocks.BLOCKS.get()){
             r.register(block);
         }
+        r.register(GeneratorBlock.UNTEXTURED_RESOURCE_BLOCK);
     }
 
     public static void registerItemBlocks(RegistryEvent.Register<Item> evt)

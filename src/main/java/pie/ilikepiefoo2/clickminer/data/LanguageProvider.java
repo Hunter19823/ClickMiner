@@ -21,5 +21,6 @@ public class LanguageProvider extends net.minecraftforge.common.data.LanguagePro
             this.add(block,block.getName()+" generator block ("+block.getType().name()+")");
             this.add(String.format("item.%s.%s_block",ClickMiner.MOD_ID,block.getName()),block.getName()+" generator block ("+block.getType().name()+")");
         }
+        this.add(GeneratorBlock.UNTEXTURED_RESOURCE_BLOCK,"Unknown Resource Block");
     }
 }

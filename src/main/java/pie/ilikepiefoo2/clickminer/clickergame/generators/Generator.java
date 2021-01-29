@@ -1,6 +1,7 @@
 package pie.ilikepiefoo2.clickminer.clickergame.generators;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
@@ -107,6 +108,14 @@ public class Generator {
         return produces;
     }
 
+    public boolean isAir()
+    {
+        if(!produces.getItem().equals(Items.AIR))
+            return false;
+        nextProduct();
+        return true;
+    }
+
     public Resource nextProduct()
     {
         this.produces = this.resourceWeightedRandom.next();
@@ -120,20 +129,16 @@ public class Generator {
 
     public CompoundNBT toNBT()
     {
-        LOGGER.debug("To NBT: ");
         CompoundNBT nbt = new CompoundNBT();
         nbt.putUniqueId("ownedBy",this.ownedBy);
         nbt.put("resourceWeightedRandom",this.resourceWeightedRandom.toNBT());
         nbt.put("generationRate",this.generationPerTick.toNBT());
         nbt.putString("type",this.generatorType.name());
         nbt.putString("name",this.name);
-        LOGGER.debug(nbt.toString());
         return nbt;
     }
     public static Generator fromNBT(CompoundNBT nbt)
     {
-        LOGGER.debug("From NBT: ");
-        LOGGER.debug(nbt.toString());
         return new Generator(
                 nbt.getString("name"),
                 nbt.getUniqueId("ownedBy"),

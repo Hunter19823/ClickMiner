@@ -21,6 +21,7 @@ public class ClickerGame implements IClickerGame{
     private static final Logger LOGGER = LogManager.getLogger();
     private final HashMap<String, BigNumber> resourceList = new HashMap<>();
     private final HashMap<BlockPos, Generator> generatorMap = new HashMap<>();
+    private final HashMap<String, Generator> generatorByName = new HashMap<>();
     private static final HashMap<BlockPos, Generator> globalGeneratorMap = new HashMap<>();
     private boolean isValid = false;
     private ClickerGameProvider provider;
@@ -132,6 +133,7 @@ public class ClickerGame implements IClickerGame{
     {
         globalGeneratorMap.put(pos,generator);
         generatorMap.put(pos,generator);
+        generatorByName.put(generator.getName(),generator);
     }
 
     public boolean hasGenerator(String generatorName)

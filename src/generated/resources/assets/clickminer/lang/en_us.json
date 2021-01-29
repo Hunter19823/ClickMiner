@@ -4,6 +4,7 @@
   "block.clickminer.drill_block": "drill generator block (AUTOMATIC)",
   "block.clickminer.forest_block": "forest generator block (BREAK)",
   "block.clickminer.oak_tree_block": "oak_tree generator block (BREAK)",
+  "block.minecraft.air": "Unknown Resource Block",
   "item.clickminer.beginner_block": "beginner generator block (CLICK)",
   "item.clickminer.dark_oak_tree_block": "dark_oak_tree generator block (BREAK)",
   "item.clickminer.drill_block": "drill generator block (AUTOMATIC)",

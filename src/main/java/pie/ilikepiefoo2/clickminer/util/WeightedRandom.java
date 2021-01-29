@@ -2,14 +2,17 @@ package pie.ilikepiefoo2.clickminer.util;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
 
 public class WeightedRandom<E extends Resource> {
-    private final NavigableMap<Double,E> map = new TreeMap<Double,E>();
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final Random rand = new Random();
+    private final NavigableMap<Double,E> map = new TreeMap<Double,E>();
     private double total = 0;
 
     public WeightedRandom<E> add(double weight, E element)
@@ -32,20 +35,26 @@ public class WeightedRandom<E extends Resource> {
         return map.higherEntry(weight).getValue();
     }
 
+    public double getTotal()
+    {
+        return total;
+    }
+
     public CompoundNBT toNBT()
     {
         CompoundNBT compoundNBT = new CompoundNBT();
         compoundNBT.putDouble("total",total);
-        for(int i=0; i<map.size(); i++)
+        CompoundNBT items = new CompoundNBT();
+        int i = 0;
+        for(Double key : map.keySet())
         {
             CompoundNBT entry =  new CompoundNBT();
-            for(Double key : map.keySet())
-            {
-                entry.putDouble("weight",key);
-                entry.put("resource",map.get(key).toNBT());
-            }
-            compoundNBT.put(i+"",entry);
+            entry.putDouble("weight",key);
+            entry.put("resource",map.get(key).toNBT());
+            items.put(i+"",entry);
+            i++;
         }
+        compoundNBT.put("items",items);
         return compoundNBT;
     }
 
@@ -54,28 +63,16 @@ public class WeightedRandom<E extends Resource> {
     {
         WeightedRandom<Resource> resourceWeightedRandom = new WeightedRandom<Resource>();
         resourceWeightedRandom.total = compoundNBT.getDouble("total");
-        for(int i=0; i<compoundNBT.size()-1; i++)
+        CompoundNBT items = compoundNBT.getCompound("items");
+        for(int i=0; i<items.size(); i++)
         {
-            CompoundNBT entry = compoundNBT.getCompound(i+"");
+            CompoundNBT entry = items.getCompound(i+"");
             resourceWeightedRandom.map.put(
                     entry.getDouble("weight"),
                     Resource.fromNBT(entry.getCompound("resource"))
             );
         }
         return resourceWeightedRandom;
-    }
-    public WeightedRandom<E> loadNBT(CompoundNBT compoundNBT)
-    {
-        total = compoundNBT.getDouble("total");
-        for(int i=0; i<compoundNBT.size()-1; i++)
-        {
-            CompoundNBT entry = compoundNBT.getCompound(i+"");
-            map.put(
-                entry.getDouble("weight"),
-                (E) E.fromNBT(entry.getCompound("resource"))
-            );
-        }
-        return this;
     }
 
 }
